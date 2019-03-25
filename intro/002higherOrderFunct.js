@@ -90,3 +90,20 @@ const filter = (fn, arr) => reduce((acc, curr) => (fn(curr) ? acc.concat([curr])
 
 // now implement censor() with filter()
 const censor = words => filter(word => word.length != 4, words);
+
+// now implement startsWithS() with filter()
+const startsWithS = words => filter(word => word.startsWith("s"), words);
+
+// Higher order functions are also commonly used to abstract how to operate on different data types.
+
+// For instance, filter() can also work with numbers, since a function that knows how to deal
+// with that data type can be passed in
+
+const highpass = cutoff => n => n >= cutoff;
+const gt3 = highpass(3);
+[1, 2, 3, 4].filter(gt3);
+
+// In this sense, higher order functions can be used to make a function polymorphic
+
+// In general, higher order functions in combination with simplistic first order
+// functions, should be how one composes their application
