@@ -106,3 +106,58 @@ double.toString(); // 'x => x * 2'
 
 // invoking with a call
 double(2); // 4
+
+// Signatures -------------------------------------------------
+
+// a function's signature consists of:
+//      1. an optional function name
+//      2. a list of parameter types, optionally named
+//      3. type of the return value
+
+// js figures out the types during runtime
+
+// signature for double()
+//   double(x: n) => Number
+
+// Most reusable function composition utilities require you to
+// pass functions which share the same type signature.
+
+// Default Parameter Values -------------------------------------
+
+// the following function works like an identity function (returns same value passed in)
+const orZero = (n = 0) => n;
+
+// if called with undefined or no argument passed, returns zero by default
+
+// when default values assigned, type inference systems can infer the type of signature
+// of your function automatically
+
+// Parameters with defaults don’t count toward the function’s .length property, which will
+// throw off utilities such as autocurry which depend on the .length value. Some curry utilities
+// (such as lodash/curry) allow you to pass a custom arity to work around this limitation if you
+// bump into it.
+
+// Named Arguments --------------------------------------------------
+
+// js functions can take object literals as arguments and use destructuring
+// assignment in the parameter signature in order to achieve named arguments equivalent
+
+const createUser = ({ name = "Anonymouse", avatar = "/anonymouse.jpg" }) => ({
+  name,
+  avatar
+});
+
+const george = createUser({
+  name: "George",
+  avatar: "/emoji.png"
+});
+
+george;
+
+// Rest and Spread --------------------------------------------------
+
+// rest : allows for gathering a group of remaining arguments in the function signature
+
+// the below function discards the first arguments, returns the rest as an array
+const aTail = (head, ...tail) => tail;
+aTail(1, 2, 3); // [2, 3]
