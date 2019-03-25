@@ -161,3 +161,14 @@ george;
 // the below function discards the first arguments, returns the rest as an array
 const aTail = (head, ...tail) => tail;
 aTail(1, 2, 3); // [2, 3]
+
+// rest gathers individual elements together into an array
+
+// spread spreads the elements from an array to individual elements
+
+const shiftToLast = (head, ...tail) => [...tail, head];
+shiftToLast(1, 2, 3); // [2, 3, 1]
+
+// spreads the rest parameters in the returned array
+
+// Currying ---------------------------------------------------------
