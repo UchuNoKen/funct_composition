@@ -53,4 +53,20 @@ const d = Object.assign({}, shorthand, shortWay);
 
 // both objects and arrays support destructuring
 
-// const [t, u] = ['a', 'b'];
+const [t, u] = ["a", "b"];
+t; // 'a'
+u; // 'b'
+
+const bleep = {
+  blop: "blop"
+};
+
+const { blop } = bleep; // same as const blop = bleep.blop;
+blop; // 'blop'
+
+// multiple destructuring assignment
+const { type, payload } = action;
+
+// assign a new name
+const { blop: bloop } = bleep;
+bloop; // 'blop'
