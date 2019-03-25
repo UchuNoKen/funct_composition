@@ -211,3 +211,18 @@ f(g(x));
 // x is evaluated
 // g() is applied to x
 // f() is applied  to the return value of
+
+// the expression is evaluated before the function is applied
+inc(double(2) * double(2)); // 17
+
+// same as inc(4 * 4)
+
+// Arrays --------------------------------------------------------------
+
+const arr = [1, 2, 3];
+arr.map(double); // [2, 4, 6]
+
+// double is passed as a value instead of calling it, because .map() returns a new array containing
+// the values returned by double()
+
+// arr is not mutated
