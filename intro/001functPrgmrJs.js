@@ -173,9 +173,8 @@ shiftToLast(1, 2, 3); // [2, 3, 1]
 
 // Currying ---------------------------------------------------------
 
-// A curried function is a function that takes multiple parameters one at a time
-
-// it takes a parameter, returns a function that takes the next parameter, and so on...
+// A curried function is a function that takes multiple parameters one at a time. It
+// takes a parameter, returns a function that takes the next parameter, and so on...
 
 // curry and partial application can be implemented by returning another function
 
@@ -201,3 +200,14 @@ const curry = (f, arr = []) => (...args) =>
   (a => (a.length === f.length ? f(...a) : curry(f, a)))([...arr, ...args]);
 
 // Function Composition ------------------------------------------------
+
+// function composition is the process of passing the return value of one function as an
+// argument to another function
+
+f.g; // read "f composed with g"
+
+f(g(x));
+
+// x is evaluated
+// g() is applied to x
+// f() is applied  to the return value of
