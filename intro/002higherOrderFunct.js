@@ -80,7 +80,7 @@ reduce((acc, curr) => acc + curr, 0, [1, 2, 3]); // 6
 
 // more generalized filter() implementation
 
-const filter = (fn, arr) => reduce((acc, curr) => (fn(curr) ? acc.concat([curr]) : acc, [], arr);
+const filter = (fn, arr) => reduce((acc, curr) => (fn(curr) ? acc.concat([curr]) : acc), [], arr);
 
 // the only thing not shared is the fn() predicate
 
@@ -89,7 +89,4 @@ const filter = (fn, arr) => reduce((acc, curr) => (fn(curr) ? acc.concat([curr])
 // otherwise the accumulator value is returned
 
 // now implement censor() with filter()
-const censor = words => filter(
-    word => word.length != 4,
-    words
-);
+const censor = words => filter(word => word.length != 4, words);
