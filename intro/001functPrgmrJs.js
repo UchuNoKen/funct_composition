@@ -67,6 +67,15 @@ blop; // 'blop'
 // multiple destructuring assignment
 const { type, payload } = action;
 
+// same as
+const type = action.type;
+const payload = action.payload;
+
 // assign a new name
-const { blop: bloop } = bleep;
+const { blop: bloop } = bleep; // assign bleep.blop as bloop
 bloop; // 'blop'
+
+// same as
+const bloop = bleep.blop;
+
+// Comparisons and Ternary -----------------------------------------
