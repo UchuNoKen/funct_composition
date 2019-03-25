@@ -79,3 +79,30 @@ bloop; // 'blop'
 const bloop = bleep.blop;
 
 // Comparisons and Ternary -----------------------------------------
+
+// === : strict equality
+// == : loose equality
+// > : greater than
+// < : less than
+// >= : greater than or equal to
+// <= : less than or equal to
+// != : not equal
+// !== : not strictly equal
+// && : logical AND
+// || : logical OR
+
+// ternary : as a question using a comparator, evaluate to answer based on the
+//           expression is truthy
+
+// Function ------------------------------------------------
+
+// function expression assigned to a name
+const double = x => x * 2;
+
+// the value of a function expression is the function itself
+double; // [Function: double]
+
+double.toString(); // 'x => x * 2'
+
+// invoking with a call
+double(2); // 4
