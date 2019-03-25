@@ -172,3 +172,32 @@ shiftToLast(1, 2, 3); // [2, 3, 1]
 // spreads the rest parameters in the returned array
 
 // Currying ---------------------------------------------------------
+
+// A curried function is a function that takes multiple parameters one at a time
+
+// it takes a parameter, returns a function that takes the next parameter, and so on...
+
+// curry and partial application can be implemented by returning another function
+
+const highpass = cutoff => n => n >= cutoff;
+const gt4 = highpass(4);
+
+// read as:
+//  'highpass is a function which takes 'cutoff' and returns a function which takes 'n',
+//  and returns the result of n >= cutoff
+
+// Autocurry lets you curry functions automatically
+const add4 = curry((a, b, c, d) => a + b + c + d);
+
+// usage
+add4(1, 2, 3, 4); // 6
+add4(1, 2, 3)(4); // 6
+add4(1)(2, 3, 4); // 6
+add4(1, 2)(3, 4); // 6
+add4(1)(2)(3)(4); // 6
+
+// Autocurry implementation
+const curry = (f, arr = []) => (...args) =>
+  (a => (a.length === f.length ? f(...a) : curry(f, a)))([...arr, ...args]);
+
+// Function Composition ------------------------------------------------
