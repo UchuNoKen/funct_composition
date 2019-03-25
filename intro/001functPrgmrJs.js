@@ -181,6 +181,9 @@ shiftToLast(1, 2, 3); // [2, 3, 1]
 const highpass = cutoff => n => n >= cutoff;
 const gt4 = highpass(4);
 
+gt4(6); // true
+gt4(3); // false
+
 // read as:
 //  'highpass is a function which takes 'cutoff' and returns a function which takes 'n',
 //  and returns the result of n >= cutoff
@@ -226,3 +229,25 @@ arr.map(double); // [2, 4, 6]
 // the values returned by double()
 
 // arr is not mutated
+
+// Method Chaining ------------------------------------------------
+
+// method chaining:
+//      the process of calling a method directly on the return value of a function,
+//      without needing to refer to the value by name
+
+const arr = [1, 2, 3];
+arr.map(double).map(double); // [4, 8, 12]
+
+// !! predicate: a function that returns a boolean value (true or false).
+
+// The filter() method takes a predicate and returns a new list, selecting only
+// items that pass the predicate (return true) to be included
+
+[2, 4, 6].filter(gt4); // [4, 6]
+
+// frequently the need arises to select items from a list, and map those items to a new list:
+
+[2, 4, 6].filter(gt4).map(double); // [8, 12]
+
+// transducers: a more efficient way of selecting and mapping at the same time
