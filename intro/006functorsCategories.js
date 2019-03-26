@@ -60,7 +60,7 @@ F.map(x => f(g(x)));
 
 F.map(g).map(f);
 
-// foundation of category theory
+// Foundation of category theory
 
 // - a category is a collection of objects and arrows between objects
 
@@ -69,3 +69,147 @@ F.map(g).map(f);
 
 // - for any group of connected objects, a -> b -> c, there must be a composition
 //   that goes from a -> c
+
+// - all arrows can be represented as compositions.  All objects in a category have
+//   identity arrows
+
+// say you have a function 'g' that takes an 'a' and returns 'b'
+// and a function 'f' that takes a 'b' and returns a 'c'
+// there must also be a function 'h' that represents the composition of f and g
+
+// the composition from a -> c is the composition:  f . g (f after g)
+
+// so h(x) = f(g(x))
+
+// function composition works right to left
+
+// composition is associative, meaning you don't need parentheses
+
+// Given a function 'F':
+
+const F = [1, 2, 3];
+
+// the following are equivalent
+
+F.map(x => f(g(x)));
+
+// and
+
+F.map(g).map(f);
+
+// Endofunctors -------------------------------------------------------
+
+// endofunctor: a functor that maps from a category back to the same category
+
+// functor can map from category to category:  X -> Y
+
+// endofunctors map from category to the same category:  X -> X
+
+// Build Your Own Functor --------------------------------------------
+
+// Ex. simple functor
+
+const Identity = value => ({
+  map: fn => Identity(fn(value))
+});
+
+// As you can see, this satisfies the functor laws:
+
+const trace = x => {
+  console.log(x);
+  return x;
+};
+
+const u = Identity(2);
+
+// Identity law
+u.map(trace); // 2
+u.map(x => x).map(trace); // 2
+
+// Composition law
+const r1 = u.map(x => f(g(x)));
+const r2 = u.map(g).map(f);
+
+r1.map(trace); // 5
+r2.map(trace); // 5
+
+// make the '+' operator work for number and string values
+
+const Identity = value => ({
+  map: fn => Identity(fn(value)),
+  valueOf: () => value,
+  toString: () => `Identity(${value})`,
+  [Symbol.iterator]: function*() {
+    yield value;
+  }
+});
+
+const ints = Identity(2) + Identity(4);
+trace(ints); // 6
+
+const hi = Identity("h") + Identity("i");
+trace(hi); // 'hi'
+
+// now this will work
+
+const arr = [6, 7, ...Identity(8)];
+trace(arr); // [6, 7, 8]
+
+// putting it all together
+
+const Identity = value => ({
+  map: fn => Identity(fn(value)),
+  valueOf: () => value,
+  toString: () => `Identity(${value})`,
+  [Symbol.iterator]: function*() {
+    yield value;
+  },
+  constructor: Identity
+});
+
+Object.assign(Identity, {
+  toString: () => "Identity",
+  is: x => typeof x.map === "function"
+});
+
+// Why Functors ---------------------------------------------------------
+
+// Functors can be used to implement many useful things in a way that works
+// with any type of data
+
+// Ex.
+//    - Start a chain of operations only if the value inside the functor is not
+//      undefined or null
+
+const exists = x => x.valueOf() !== undefined && x.valueOf() !== null;
+
+const ifExists = x => ({
+  map: fn => (exists(x) ? x.map(fn) : x)
+});
+
+const add1 = n => n + 1;
+const double = n => n * 2;
+
+// Nothing happens...
+ifExists(Identity(undefined)).map(trace);
+// Still nothing...
+ifExists(Identity(null)).map(trace);
+
+// 42
+ifExists(Identity(20))
+  .map(add1)
+  .map(double)
+  .map(trace);
+
+// Customize map using curry function
+
+const map = curry((fn, F) => F.map(fn));
+
+const double = n => n * 2;
+
+const mdouble = map(double);
+mdouble(Identity(4)).map(trace);
+
+// Functors are things we can map over. More specifically, a functor is a mapping from
+// category to category. A functor can even map from a category back to the same category
+// (i.e., an endofunctor).
