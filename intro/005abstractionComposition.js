@@ -42,3 +42,71 @@
 // Abstraction through composition --------------------------------------
 
 // pure functions are the most useful for abstraction
+
+// in the function below, you can say that 'f' defines a relationship between 'A' and 'B'
+
+// f: A -> B
+
+// another function 'g', could define a relationship between 'B' and 'C'
+
+// This implies another function 'h', which defines a relationship directly from 'A' to 'C'
+
+// h: A -> C
+
+// Those relationships from the structure of the problem space, and the way
+// you compose functions in the application forms the structure of the application
+
+// good abstractions simplify by hiding structure, the same way 'h' reduces
+// A -> B -> C
+// down to A -> C
+
+// How to do More with Less Code -----------------------------------
+
+// abstraction is the key to doing more with less code
+
+const add = (a, b) => a + b;
+
+// if you use the above function frequently to increment, it might make sense to fix
+// one of those numbers
+
+const a = add(1, 1);
+const b = add(a, 1);
+const c = add(b, 1);
+
+// the add function can be curried
+
+const add = a => b => a + b;
+
+// partial application can then be used, applying the function to its first argument,
+// returning a new function that takes the new argument
+
+const inc = add(a);
+
+// now inc can be used instead of add when incrementing by 1 is needed
+
+const a = inc(1);
+const b = inc(a);
+const c = inc(b);
+
+// map can be written as a curried function
+
+const map = f => arr => arr.map(f);
+
+// this version takes a specializing function and returns a specialized version of itself
+// that takes the array to be processed
+
+const f = n => n * 2;
+
+const doubleAll = map(f);
+const doubled = doubleAll([1, 2, 3]);
+
+// [2, 4, 6]
+
+// characteristics of good abstractions:
+
+// Simple
+// Concise
+// Reusable
+// Independent
+// Decomposable
+// Recomposable
