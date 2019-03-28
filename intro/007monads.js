@@ -366,3 +366,91 @@ const composeFlatMap = composeM("flatMap");
 // h(x).chain(x => g(x).chain(f)) ==== (h(x).chain(g)).chain(f)
 
 // Proving the Monad Laws -----------------------------------------------------
+
+// Prove that the identity monad satisfies the monad laws:
+
+{
+  // Identity monad
+  const Id = value => ({
+    // Functor mapping
+    // Preserve the wrapping for .map() by
+    // passing the mapped value into the type
+    // lift:
+    map: f => Id.of(f(value)),
+    // Monad chaining
+    // Discard one level of wrapping
+    // by omitting the .of() type lift:
+    chain: f => f(value),
+    // Just a convenient way to inspect
+    // the values:
+    toString: () => `Id(${value})`
+  });
+  // The type lift for this monad is just
+  // a reference to the factory.
+  Id.of = Id;
+  const g = n => Id(n + 1);
+  const f = n => Id(n * 2);
+  // Left identity
+  // unit(x).chain(f) ==== f(x)
+  trace("Id monad left identity")([Id(x).chain(f), f(x)]);
+  // Id monad left identity: Id(40), Id(40)
+
+  // Right identity
+  // m.chain(unit) ==== m
+  trace("Id monad right identity")([Id(x).chain(Id.of), Id(x)]);
+  // Id monad right identity: Id(20), Id(20)
+  // Associativity
+  // m.chain(f).chain(g) ====
+  // m.chain(x => f(x).chain(g)
+  trace("Id monad associativity")([
+    Id(x)
+      .chain(g)
+      .chain(f),
+    Id(x).chain(x => g(x).chain(f))
+  ]);
+  // Id monad associativity: Id(42), Id(42)
+}
+
+// Conclusion --------------------------------------------------------
+
+// Monads are a way to compose lifting functions:
+
+// g: a => M(b)
+// f: b => M(c)
+
+// To accomplish this, monads must flatten M(b) to b before applying f()
+
+// In other words, functors are things you can map over
+
+// Monads are things you can flatMap over:
+
+// Function map: a => b
+// Functors map with context: Functor(a) => Functor(b)
+// Monads flatten and map with context: Monad(Monad(a)) => Monad(b)
+
+// Monads are based on simple symmetry:
+//  - a way to wrap a value into a context
+//  - and a way to unwrap the value from the context
+//      lift/unit:     a => M(a)
+//      flatten/join:  M(a) => a
+
+// And since monads are also functors, they can also map:
+//      Map: Map with context preserved:  M(a) -> M(b)
+
+// Combine flatten with map and you get chain, function composition for lifting functions
+
+//      FlatMap/Chain Flatten + map:  M(M(a)) => M(b)
+
+// Examples of monads in every day JS code include:
+//  promises
+//  observables
+
+// Kleisli composition allows you to compose your data flow logic without worrying about the
+// particulars of the data type’s API, and without worrying about the possible side-effects,
+// conditional branching, or other details of the unwrapping computations hidden in the
+// chain()operation.
+
+// This makes monads a very powerful tool to simplify your code. You don’t have to understand
+// or worry about what’s going on inside monads to reap the simplifying benefits that monads
+// can provide, but now that you know more about what’s under the hood, taking a peek under
+// the hood isn’t such a scary prospect.
